@@ -160,7 +160,7 @@
           showTabs(feature);
           geoDataLayer.resetStyle();
           layer.setStyle({ color: "red" });
-          history.pushState(null, null, "/cua-browser.html?road=" + feature.properties.id);
+          history.pushState(null, null, "/slv-demo-apps/cua-browser.html?road=" + feature.properties.id);
           getManifest(feature, side);
         })
         // Select feature based on url params

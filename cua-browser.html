@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+      <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+     <script
+      src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+      integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+      crossorigin="anonymous"></script>
+      <script src="//openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
+     <style>
+      
+
+      #map { height: 40vh;}
+
+      div#images {
+        background-color: #333;
+        height: 30vh;
+      }
+
+      div#gallery {
+        background-color: #333;
+        height: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        padding: 10px;
+        width: 100%;
+      }
+
+
+      div#gallery img { 
+        padding: 10px;
+        height: 100%;
+        width: auto;
+      }
+      path.leaflet-interactive{
+        outline: none;
+      }
+      .modal-content {
+        width: 60vw;
+        height: 80vh;
+      }
+
+    </style>
+  </head>
+  <body>
+
+  <section class="section">
+    <div class="container is-fluid">
+<header class="mb-4">
+        <h1 class="title has-text-weight-normal is-size-1 mt-4">
+          The Committee for Urban Action collection
+        </h1>
+        <p class="content is-size-6">In the 1970s, concerned by the destruction of Victoria’s building heritage, a group called the Committee for Urban Action (CUA) photographed an extraordinary number of streetscapes in inner-city Melbourne and regional towns. These photographs <a href="https://find.slv.vic.gov.au/discovery/collectionDiscovery?vid=61SLV_INST:SLV&collectionId=81271917420007636">are being digitised by the State Library of Victoria</a>.</p>
+        </header>
+
+
+
+
+        <div id="map" class=""></div>
+        
+        <div id="images" class="">
+          <h4 id="info" class="title p-4 mb-0 is-size-5 has-text-weight-normal">Click on a highlighted road to view the photos...</h4>
+          <div class="tabs">
+            <ul>
+            </ul>
+          </div>
+          <div id="gallery"></div>
+        </div>
+        
+
+
+      <script>
+
+      </script>
+    </div>
+  </section>
+  <div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <!-- Any other Bulma elements you want -->
+      <div id="seadragon-viewer" style="width:60vw; height:60vh; z-index: 100;"></div>
+      <a id="slv-link" class="button mt-4" href="">View at SLV</a>
+
+    </div>
+    <button id="modal-close" class="modal-close is-large" aria-label="close"></button>
+  </div>
+  <script>
+    $(function() {
+      var geoDataLayer;
+      var manifestURL;
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentRoad = urlParams.get('road');
+
+      function getImages(manifest) {
+        let images = [];
+        console.log(manifest);
+        for (let canvas of manifest.sequences[0].canvases) {
+          images.push(canvas.images[0].resource.service["@id"]);
+        }
+        return images
+      }
+
+      function getManifest(feature, side) {
+        $("#gallery").empty();
+        manifestURL = "https://wraggelabs.com/slv_iiif/" + feature.properties.sides[side].images[0].ie_id + "?group=true";
+        fetch(manifestURL)
+            .then(response => response.json())
+            .then(manifest => getImages(manifest))
+            .then(images => displayImages(feature, images, side))
+      }
+
+      function showTabs(feature) {
+        $("div.tabs > ul").empty()
+        if (feature.properties.sides.length > 1) {
+            $.each(feature.properties.sides, function(i, sideDetails) {
+              console.log(sideDetails)
+              $("div.tabs > ul").append($("<li>").append($("<a>").text(sideDetails.sides).click(function() {getManifest(feature, i); $("div.tabs li").toggleClass("is-active")})));
+            });
+            $("div.tabs li").first().attr("class", "is-active");
+        }
+      }
+
+      function displayImages(feature, images, side) {
+        $("#info").html(feature.properties.sides[side].title);
+
+        const imageBar = $("#gallery");
+        console.log(imageBar);
+        $.each(images, function(index, image) {
+          imageBar.append($("<img>").attr("src", image + "/full/,500/0/default.jpg").click(function(e) {viewImage($(this).attr("src")); openModal();}));
+        });
+      }
+
+      function openModal() {
+        $("#map").hide();
+        $(".modal").addClass("is-active");
+      }
+      function closeModal() {
+        $("#map").show();
+        $(".modal").removeClass("is-active");
+      }
+
+      // Add click events and styles to individual map features
+      function onEachFeature(feature, layer) {
+        let side = 0;
+        // Click function for roads
+        layer.on('click', function (e) {
+          console.log("Loading..." + feature.properties.id);
+          $("#info").html("Loading photos from " + feature.properties.sides[side].title);
+          showTabs(feature);
+          geoDataLayer.resetStyle();
+          layer.setStyle({ color: "red" });
+          history.pushState(null, null, "/cua-browser.html?road=" + feature.properties.id);
+          getManifest(feature, side);
+        })
+        // Select feature based on url params
+        if (feature.properties.id == currentRoad) {
+          console.log(currentRoad);
+          layer.setStyle({ color: "red" });
+          map.fitBounds(layer.getBounds());
+          showTabs(feature);
+          getManifest(feature, side);
+        } 
+        // Add tooltip
+        let titles = [];
+        for (let side of feature.properties.sides) {
+          titles.push(side.title);
+        }
+        layer.bindTooltip(titles.join(" / "));
+      }
+
+      // Make the map
+      const map = L.map('map').setView([-37.815, 144.965], 13);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+      fetch("https://raw.githubusercontent.com/StateLibraryVictoria-SLVLAB/geo-maps-residency/refs/heads/main/cua-road-segments.geojson")
+        .then(response => response.json())
+        .then(geodata => L.geoJSON(geodata, {onEachFeature: onEachFeature}).addTo(map))
+        .then(newLayer => geoDataLayer = newLayer );
+
+      // modal
+      $(".modal-background, .modal-close, .delete, button#modal-close").click(function() {closeModal();})
+      document.addEventListener('keydown', (event) => {
+        if(event.key === "Escape") {
+          closeModal();
+        }
+      });
+
+      // UV
+
+      function viewImage(imageURL) {
+        let digitalID = imageURL.match(/(IE\d+)/)[0];
+        let slvURL = "https://viewer.slv.vic.gov.au/?entity=" + digitalID + "&mode=browse";
+        $("#slv-link").attr("href", slvURL);
+        $("#seadragon-viewer").empty();
+        var viewer = OpenSeadragon({
+          id: "seadragon-viewer",
+          prefixUrl: "//openseadragon.github.io/openseadragon/images/",
+          tileSources: [imageURL.replace("full/,500/0/default.jpg", "info.json")]
+        });
+      }
+    });
+  </script>
+  </body>
+</html>

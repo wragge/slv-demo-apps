@@ -23,12 +23,10 @@
       #map { height: 40vh;}
 
       div#images {
-        background-color: #333;
         height: 30vh;
       }
 
       div#gallery {
-        background-color: #333;
         height: 100%;
         overflow-x: auto;
         overflow-y: hidden;
@@ -36,7 +34,6 @@
         padding: 10px;
         width: 100%;
       }
-
 
       div#gallery img { 
         padding: 10px;
@@ -50,6 +47,11 @@
         width: 60vw;
         height: 80vh;
       }
+
+      .tabs li a {
+        color: var(--bulma-grey-lighter);
+      }
+
 
     </style>
   </head>
@@ -69,13 +71,13 @@
 
         <div id="map" class=""></div>
         
-        <div id="images" class="">
-          <h4 id="info" class="title p-4 mb-0 is-size-5 has-text-weight-normal">Click on a highlighted road to view the photos...</h4>
-          <div class="tabs">
-            <ul>
+        <div id="images" class="has-background-dark has-text-grey-lighter">
+          <h4 id="info" class="title p-4 mb-0 is-size-5 has-text-weight-normal has-text-grey-lighter">Click on a highlighted road to view the photos...</h4>
+          <div class="tabs has-text-grey-lighter">
+            <ul class="">
             </ul>
           </div>
-          <div id="gallery"></div>
+          <div id="gallery" class="has-background-dark"></div>
         </div>
         
 
@@ -127,7 +129,7 @@
               console.log(sideDetails)
               $("div.tabs > ul").append($("<li>").append($("<a>").text(sideDetails.sides).click(function() {getManifest(feature, i); $("div.tabs li").toggleClass("is-active")})));
             });
-            $("div.tabs li").first().attr("class", "is-active");
+            $("div.tabs li").first().addClass("is-active");
         }
       }
 
@@ -185,6 +187,7 @@
           maxZoom: 19,
           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
+      L.circle([-37.815, 144.965], 1044).addTo(map);
       fetch("https://raw.githubusercontent.com/StateLibraryVictoria-SLVLAB/geo-maps-residency/refs/heads/main/cua-road-segments.geojson")
         .then(response => response.json())
         .then(geodata => L.geoJSON(geodata, {onEachFeature: onEachFeature}).addTo(map))

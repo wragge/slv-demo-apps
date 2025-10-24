@@ -48,9 +48,7 @@
         height: 80vh;
       }
 
-      .tabs li a {
-        color: var(--bulma-grey-lighter);
-      }
+
 
 
     </style>
@@ -71,13 +69,13 @@
 
         <div id="map" class=""></div>
         
-        <div id="images" class="has-background-dark has-text-grey-lighter">
-          <h4 id="info" class="title p-4 mb-0 is-size-5 has-text-weight-normal has-text-grey-lighter">Click on a highlighted road to view the photos...</h4>
-          <div class="tabs has-text-grey-lighter">
+        <div id="images">
+          <h4 id="info" class="title p-4 mb-0 is-size-5 has-text-weight-normal">Click on a highlighted road to view the photos...</h4>
+          <div class="tabs">
             <ul class="">
             </ul>
           </div>
-          <div id="gallery" class="has-background-dark"></div>
+          <div id="gallery" class=""></div>
         </div>
         
 
@@ -187,7 +185,6 @@
           maxZoom: 19,
           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
-      L.circle([-37.815, 144.965], 1044).addTo(map);
       fetch("https://raw.githubusercontent.com/StateLibraryVictoria-SLVLAB/geo-maps-residency/refs/heads/main/cua-road-segments.geojson")
         .then(response => response.json())
         .then(geodata => L.geoJSON(geodata, {onEachFeature: onEachFeature}).addTo(map))

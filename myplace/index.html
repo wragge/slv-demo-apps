@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>my place: exploring the State Library of Victoria's collections by location</title>
+    <style>
+      #map {
+        width: 100%;
+        height: 380px;
+        padding: 0;
+        margin: 0;
+      }
+      .uv-thumb {
+        width: 100%;
+        height: 200px;
+        padding: 0;
+        margin: 0;
+      }
+      .map-thumb {
+        width: 100%;
+        height: 300px;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-GZfFwRJG-MwXNc-wD5OYf.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+
+  </head>
+  <body>
+    <section class="bulma-block bulma-hero bulma-is-primary">
+      <div class="bulma-hero-body">
+        <div class="bulma-columns">
+          <div class="bulma-column bulma-is-half">
+            <h1 class="bulma-title bulma-is-size-1 bulma-has-text-weight-light">
+              my place
+            </h1>
+            <p class="bulma-subtitle bulma-has-text-grey-dark bulma-is-size-4">exploring the State Library of Victoria's collections by location</p>
+          </div>
+          <div class="bulma-column bulma-is-half">
+              <div class="bulma-card" id="map"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="my-house-hero" class="bulma-block bulma-mt-0 source-title bulma-hero bulma-has-background-primary-15 ">
+      <div class="bulma-hero-body ">
+        <h2 class="bulma-title bulma-is-size-2 bulma-has-text-weight-light bulma-has-text-primary-15-invert">my house</h2>
+        <p class="bulma-subtitle"></p>
+      </div>
+    </section>
+
+    <section id="my-house" class="bulma-block bulma-section">
+      <div id="my-house-container" class="bulma-container-fluid">
+        <div class="bulma-block bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-house-sm-grid" class="my-house bulma-grid">
+
+          </div>
+        </div>
+
+        <div class="bulma-block bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-house-maps-grid" class="my-house bulma-grid">
+
+          </div>
+        </div>
+
+        <div class="bulma-block bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-house-parish-maps-grid" class="my-house bulma-grid">
+
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <section  id="my-street-hero" class="bulma-block bulma-mt-0 source-title bulma-mt-5 bulma-hero bulma-has-background-primary-15">
+      <div class="bulma-hero-body">
+        <h2 class="bulma-title bulma-is-size-2 bulma-has-text-weight-light bulma-has-text-primary-15-invert">my street</h2>
+        <p class="bulma-subtitle"></p>
+      </div>
+    </section>
+
+    <section id="my-street" class="bulma-block bulma-section">
+      <div id="my-street-container" class="bulma-container-fluid">
+
+        <div class="bulma-block bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-street-sm-grid" class="my-street bulma-grid">
+          </div>
+        </div>
+        
+        <div class="bulma-block bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-street-cua-grid" class="my-street bulma-grid">
+          </div>
+        </div>
+        
+        <div class="bulma-block bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-street-maps-grid" class="my-street bulma-grid">
+          </div>
+        </div>
+
+        <div class="bulma-block bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-street-parish-maps-grid" class="my-street bulma-grid">
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="my-suburb-hero" class="bulma-block bulma-mt-0 source-title bulma-mt-5 bulma-hero bulma-has-background-primary-15">
+      <div class="bulma-hero-body">
+        <h2 class="bulma-title bulma-is-size-2 bulma-has-text-weight-light bulma-has-text-primary-15-invert">my suburb</h2>
+        <p class="bulma-subtitle"></p>
+      </div>
+    </section>
+
+    <section id="my-suburb" class="bulma-block bulma-section">
+      <div id="my-suburb-container" class="bulma-container-fluid">
+        
+        <div class="bulma-block bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-suburb-info-grid" class="my-suburb bulma-grid">
+          </div>
+        </div>
+        
+        <div class="bulma-block my-suburb-maps bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-suburb-maps-grid" class="my-suburb bulma-grid">
+          </div>
+        </div>
+
+        <div class="bulma-block my-suburb-parish-maps bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-suburb-parish-maps-grid" class="my-suburb bulma-grid">
+          </div>
+        </div>
+        
+        <div class="bulma-block my-suburb-newspapers bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="my-suburb-newspapers-grid" class="my-suburb bulma-grid">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="nearby-hero" class="bulma-block bulma-mt-0 source-title bulma-mt-5 bulma-hero bulma-has-background-primary-15">
+      <div class="bulma-hero-body">
+        <h2 class="bulma-title bulma-is-size-2 bulma-has-text-weight-light bulma-has-text-primary-15-invert">nearby</h2>
+        <p class="bulma-subtitle"></p>
+      </div>
+    </section>
+    
+
+    <section id="nearby" class="bulma-block bulma-section">
+      <div id="nearby-container" class="bulma-container-fluid">
+
+        <div class="bulma-block nearby-cua bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="nearby-cua-grid" class="nearby bulma-grid">
+          </div>
+        </div>
+
+        <div class="bulma-block nearby-maps bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="nearby-maps-grid" class="nearby bulma-grid">
+          </div>
+        </div>
+
+        <div class="bulma-block nearby-parish-maps bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="nearby-parish-maps-grid" class="nearby bulma-grid">
+          </div>
+        </div>
+        
+        <div class="bulma-block nearby-newspapers bulma-fixed-grid bulma-has-1-cols-mobile bulma-has-2-cols-tablet bulma-has-4-cols-desktop bulma-has-6-cols-widescreen">
+          <div id="nearby-newspapers-grid" class="nearby bulma-grid">
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    <section class="bulma-block bulma-mt-0 bulma-hero bulma-has-background-primary-15">
+      <div class="bulma-hero-body">
+        <h2 class="bulma-title bulma-is-size-2 bulma-has-text-weight-light bulma-has-text-primary-15-invert">about</h2>
+        <div class="bulma-content">
+          <p class="bulma-is-size-4"><i>What can you tell me about my house?</i></p>
+
+          <p>Many people arrive at the State Library of Victoria, either in-person or online, wanting to find out about a place – their home, their street, their town. The Library holds lots of material about Victorian places, but it's not always easy to find. You can search by name, but not by distance.</p>
+
+          <p>This is an experiment in exploring the Library's collections by name <i>and</i> distance. To make this possible, I've extracted and processed large amounts of data from resources such as:
+            <ul>
+              <li><a href="https://find.slv.vic.gov.au/discovery/collectionDiscovery?vid=61SLV_INST:SLV&collectionId=81213035910007636">Sands & MacDougall's directories</a></li>
+              <li><a href="https://find.slv.vic.gov.au/discovery/collectionDiscovery?vid=61SLV_INST:SLV&collectionId=81271917420007636">Committee for Urban Action collection</a></li>
+              <li>parish maps</li>
+              <li>Victorian newpapers</li>
+            </ul>
+          </p>
+          <p>In addition, Victorian map lovers have been helping me <a href="https://wragge.github.io/slv-allmaps/">georeference digitised maps</a> from the Library's collection. You can check <a href="https://wragge.github.io/slv-allmaps/dashboard.html">the project dashboard</a> for details.</p>
+
+          <p>Just enter a street address, street name, or place name to get started. For example:
+
+            <ul>
+              <li>my parents built their first house at <a href="https://slv.wraggelabs.com/myplace/?osm_id=N12412399732">96 Cromer Rd, Beaumaris</a></li>
+              <li>in the 1980s, some friends used to live in <a href="https://slv.wraggelabs.com/myplace/?osm_id=W13867343">Best Street, Fitzroy North</a></li>
+              <li>I was born in <a href="https://slv.wraggelabs.com/myplace/?osm_id=N36701460">Geelong</a>
+            </ul>
+
+          <p>All the code and more documentation will be available soon!</p>
+
+        </div>
+      </div>
+    </section>
+    <footer class="bulma-footer">
+      <div class="bulma-content bulma-has-text-centered">
+        This is an experimental interface created by <a href="https://timsherratt.au">Tim Sherratt</a> during his time as <a href="https://lab.slv.vic.gov.au/team/tim-sherratt">Creative Technologist-in-Residence</a> at the <a href="https://lab.slv.vic.gov.au">State Library of Victoria Lab</a>.
+      </div>
+    </footer>
+    
+    <script type="module" src="src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+.uv {
+  width: 100%;
+  height: 60vh;
+}
+#my-house, #my-street, #my-suburb, #nearby, .source-title, .my-house-sm, .my-house-cua, .my-street-sm, .my-street-maps, .my-street-cua, .my-suburb-maps, .my-suburb-newspapers, .nearby-cua, .nearby-maps, .nearby-newspapers {
+  display: none;
+}
+.leaflet-control-geocoder-form {
+  width: 80%;
+}
+.leaflet-control-geocoder-form input {
+  width: 100%;
+}
+.leaflet-control-geocoder.leaflet-bar{
+  width: 100%;
+  border: 3px solid #7585ff;
+}
+.leaflet-left {
+  width: 60%;
+}

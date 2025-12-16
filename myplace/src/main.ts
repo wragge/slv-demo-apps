@@ -355,8 +355,8 @@ async function displaySuburbImages(suburb, number) {
 async function displaySandsMac(entry, year, houseNumber) {
     const cellId = `sm-${year}-${entry.page}-${entry.line}`;
     let buffer = 100;
-    let x = entry.x - buffer;
-    let y = entry.y - buffer;
+    let x = (entry.x - buffer) < 0 ? 0 : (entry.x - buffer);
+    let y = (entry.y - buffer) < 0 ? 0 : (entry.y - buffer);
     let h = entry.h + (buffer * 2);
     let w = entry.w + (buffer * 2);
     let imageUrl = `https://rosetta.slv.vic.gov.au/iiif/2/${entry.vol_id}:${entry.page_id}.tif/${x},${y},${w},${h}/max/0/default.jpg`;
@@ -618,10 +618,10 @@ async function displayParishMap(map, addressType, point) {
         `<a class="bulma-card-footer-item" href="https://find.slv.vic.gov.au/discovery/fulldisplay?vid=61SLV_INST:SLV&docid=alma${map.alma_id}">Catalogue</a>`, 
         //`<a class="bulma-card-footer-item" href="https://viewer.slv.vic.gov.au/?entity=${map.ie_id}&mode=browse">Image viewer</a>`, 
     ]
-    if (imageId) {
-        links.push(`<a class="bulma-card-footer-item" href="https://viewer.slv.vic.gov.au/?entity=${map.ie_id}&mode=browse">Image viewer</a>`);
+    if (map.image_id) {
+        links.push(`<a class="bulma-card-footer-item" href="https://viewer.slv.vic.gov.au/?entity=${map.image_id}&mode=browse">Image viewer</a>`);
     }
-    let map_id = `${map.ie_id}-map`;
+    let map_id = `${map.image_id}-map`;
     let mapCard;
     if (imageId) {
         let imageUrl = `${imageId}/full/800,/0/default.jpg`;

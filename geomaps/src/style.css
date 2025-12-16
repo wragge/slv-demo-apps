@@ -1,0 +1,10 @@
+#map {
+    width: 100%;
+    height: 60vh;
+}
+
+.bulma-media.map-selected {
+    border-top: 10px solid #009e86;
+}
+
+#info {display: none;}

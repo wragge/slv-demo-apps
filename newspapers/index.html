@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Explore Victorian newspapers</title>
+    <script async src="https://plausible.io/js/pa-GZfFwRJG-MwXNc-wD5OYf.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
+  </head>
+  <body class="noscroll">
+    <nav class="bulma-navbar bulma-is-primary" role="navigation" aria-label="main navigation">
+    <div class="bulma-navbar-brand">
+      <!-- navbar items, navbar burger... -->
+      <div class="bulma-navbar-item">
+        <h1 class="bulma-title bulma-is-size-6 bulma-has-text-primary-invert">Explore Victorian newspapers</h1>
+      </div>
+      <a role="button" class="bulma-navbar-burger bulma-has-text-primary-invert" data-target="aboutMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="aboutMenu" class="bulma-navbar-menu">
+      <div class="bulma-navbar-end">
+        <a id="about-link" class="bulma-navbar-item" href="#">About this</a>
+      </div>
+    </div>
+  </nav>
+    <div class="bulma-container-fluid">
+      <div class="bulma-columns is-full-height">
+        <div class="bulma-column bulma-is-three-quarters">
+          
+          <div id="map"></div>
+        
+        </div>
+
+        <div class="bulma-column">
+          <div class="bulma-pt-4" id="results"><div class="bulma-is-size-5 bulma-mt-4"><p>⭠ click on the map to find nearby newspapers</p></div></div>
+        </div>
+      </div>
+      
+    </div>
+    <div id="modal-about" class="bulma-modal">
+      <div class="bulma-modal-background"></div>
+
+      <div class="bulma-modal-content">
+        <div class="bulma-box">
+          <p class="bulma-block">This is an experimental interface created by <a href="https://timsherratt.au">Tim Sherratt</a> during his time as <a href="https://lab.slv.vic.gov.au/team/tim-sherratt">Creative Technologist-in-Residence</a> at the <a href="https://lab.slv.vic.gov.au">State Library of Victoria Lab</a>.</p>
+          <p class="bulma-block">The data was compiled by harvesting details of Victorian newspapers with place names in the 'Place newspaper published' field from the SLV catalogue. These place names were matched against the <a href="https://maps.land.vic.gov.au/lassi/VicnamesUI.jsp">VicNames database</a> to find their coordinates.</p>
+          <p class="bulma-block">This data was then checked against a <a href="https://wraggelabs.com/trove-places/">dataset of places</a> where Trove's digitised newspapers were published or distributed. Any Victorian titles missing from the catalogue data were added.</p>
+          <p class="bulma-block"><a href="https://slv.wraggelabs.com/">Explore more apps, sites, code, and documentation</a> relating to my SLV residency.</p>
+        </div>
+      </div>
+
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+  <script type="module" src="src/main.ts"></script>
+  </body>
+</html>

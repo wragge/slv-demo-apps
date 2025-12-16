@@ -1,0 +1,49 @@
+@media (max-width: 768px) {
+  #map {
+      width: 100%;
+      height: 50vh;
+  }
+}
+
+@media (min-width: 769px) {
+  #map {
+      width: 100%;
+      min-height: calc(100vh - ( 4rem ) );
+      max-height: calc(100vh - ( 4rem ) );
+      height: calc(100vh - ( 4rem ) );
+  }
+}
+
+.bulma-media.map-selected {
+    border-top: 10px solid #009e86;
+}
+
+#info {display: none;}
+
+
+.bulma-columns {
+  &.is-fullheight {
+    min-height: calc(100vh - ( 4rem ) );
+    max-height: calc(100vh - ( 4rem ) );
+    height: calc(100vh - ( 4rem ) );
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    }
+}
+
+#results {
+  position: sticky;
+  display: inline-block;
+  vertical-align: top;
+  min-height: calc(100vh - ( 4rem ) );
+  max-height: calc(100vh - ( 4rem ) );
+  height: calc(100vh - ( 4rem ) );
+  overflow-y: auto;
+  width: 100%;
+}
+
+body {
+  overflow: hidden;
+  height: 100vh;
+}

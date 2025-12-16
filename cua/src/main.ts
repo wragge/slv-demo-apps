@@ -105,7 +105,7 @@ $(function() {
     .then(newLayer => geoDataLayer = newLayer );
 
   // modal
-  $(".modal-background, .modal-close, .delete, button#modal-close").click(function() {closeModal();})
+  $(".bulma-modal-background, .bulma-modal-close, .delete, button#modal-close").click(function() {closeModal();})
   document.addEventListener('keydown', (event) => {
     if(event.key === "Escape") {
       closeModal();

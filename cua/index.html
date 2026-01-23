@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Committee for Urban Action collection</title>
+    <title>SLV Committee for Urban Action collection</title>
       <script src="//openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
       <script async src="https://plausible.io/js/pa-GZfFwRJG-MwXNc-wD5OYf.js"></script>
     <script>
@@ -12,38 +12,42 @@
     </script>
   </head>
   <body>
-
-  <section class="bulma-section">
-    <div class="bulma-container bulma-is-fluid">
-      <header class="bulma-mb-4">
-        <h1 class="bulma-title bulma-has-text-weight-normal bulma-is-size-1 bulma-mt-4">
-          The Committee for Urban Action collection
-        </h1>
-        <p class="bulma-content bulma-is-size-6">In the 1970s, concerned by the destruction of Victoria’s building heritage, a group called the Committee for Urban Action (CUA) photographed an extraordinary number of streetscapes in inner-city Melbourne and regional towns. These photographs <a href="https://find.slv.vic.gov.au/discovery/collectionDiscovery?vid=61SLV_INST:SLV&collectionId=81271917420007636">are being digitised by the State Library of Victoria</a>.</p>
-        </header>
-
-
-
-
-        <div id="map" class=""></div>
-        
-        <div id="images">
-          <h4 id="info" class="bulma-title bulma-p-4 bulma-mb-0 bulma-is-size-5 bulma-has-text-weight-normal">Click on a highlighted road to view the photos...</h4>
+    <nav class="bulma-navbar bulma-is-primary" role="navigation" aria-label="main navigation">
+    <div class="bulma-navbar-brand">
+      <!-- navbar items, navbar burger... -->
+      <div class="bulma-navbar-item">
+        <h1 class="bulma-title bulma-is-size-6 bulma-has-text-primary-invert">SLV Committee for Urban Action collection</h1>
+      </div>
+      <a role="button" class="bulma-navbar-burger bulma-has-text-primary-invert" data-target="aboutMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="aboutMenu" class="bulma-navbar-menu">
+      <div class="bulma-navbar-end">
+        <a id="about-link" class="bulma-navbar-item" href="#">About this</a>
+      </div>
+    </div>
+    </nav>
+    <div class="bulma-container-fluid bulma-p-4">
+      <div id="map" class=""></div>
+      <div id="images">
+        <div id="gallery-title">
+          <h4 id="info" class="bulma-title bulma-p-4 bulma-mb-0 bulma-is-size-5 bulma-has-text-weight-normal">Click on a highlighted road to view photos from the collection...</h4>
           <div class="bulma-tabs">
             <ul class="">
             </ul>
           </div>
-          <div id="gallery" class=""></div>
         </div>
+        <div id="photosets" class="bulma-content bulma-mt-4">
+        </div>
+        <div id="gallery" class=""></div>
+      </div>
+  </div>
         
-
-
-      <script>
-
-      </script>
-    </div>
-  </section>
-  <div class="bulma-modal">
+  <div id="modal-zoom" class="bulma-modal">
     <div class="bulma-modal-background"></div>
     <div class="bulma-modal-content">
       <!-- Any other Bulma elements you want -->
@@ -53,11 +57,24 @@
     </div>
     <button id="modal-close" class="bulma-modal-close bulma-is-large" aria-label="close"></button>
   </div>
-  <footer class="bulma-footer bulma-mt-6">
-    <div class="bulma-content bulma-has-text-centered">
-      This is an experimental interface created by <a href="https://timsherratt.au">Tim Sherratt</a> during his time as <a href="https://lab.slv.vic.gov.au/team/tim-sherratt">Creative Technologist-in-Residence</a> at the <a href="https://lab.slv.vic.gov.au">State Library of Victoria Lab</a>.
+
+  <div id="modal-about" class="bulma-modal">
+    <div class="bulma-modal-background"></div>
+
+    <div class="bulma-modal-content">
+      <div class="bulma-box">
+        <h2 class="bulma-title bulma-has-text-weight-normal bulma-is-size-3 bulma-mt-4">
+          The Committee for Urban Action collection
+        </h2>
+        <p class="bulma-content bulma-is-size-6">In the 1970s, concerned by the destruction of Victoria’s building heritage, a group called the Committee for Urban Action (CUA) photographed an extraordinary number of streetscapes in inner-city Melbourne and regional towns. These photographs <a href="https://find.slv.vic.gov.au/discovery/collectionDiscovery?vid=61SLV_INST:SLV&collectionId=81271917420007636">are being digitised by the State Library of Victoria</a>.</p>
+        <h2 class="bulma-title bulma-has-text-weight-normal bulma-is-size-3 bulma-mt-4">
+          This interface
+        </h2>
+        <p class="bulma-block">This is an experimental interface created by <a href="https://timsherratt.au">Tim Sherratt</a> during his time as <a href="https://lab.slv.vic.gov.au/team/tim-sherratt">Creative Technologist-in-Residence</a> at the <a href="https://lab.slv.vic.gov.au">State Library of Victoria Lab</a>.</p>
+        <p class="bulma-block"><a href="https://slv.wraggelabs.com/">Explore more apps, sites, code, and documentation</a> relating to my SLV residency.</p>
+      </div>
+      <button id="modal-close" class="bulma-modal-close bulma-is-large" aria-label="close"></button>
     </div>
-  </footer>
   <script type="module" src="src/main.ts"></script>
   </body>
 </html>

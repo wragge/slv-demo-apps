@@ -1,0 +1,40 @@
+
+#map {
+    width: 100%;
+    min-height: calc(50vh - ( 5rem ) );
+    max-height: calc(50vh - ( 5rem ) );
+    height: calc(50vh - ( 5rem ) );
+}
+
+div#images {
+    //width: 100%;
+    min-height: calc(50vh - ( 5rem ) );
+    max-height: calc(50vh - ( 5rem ) );
+    height: calc(50vh - ( 5rem ) );
+}
+
+div#gallery {
+  height: calc(100% - 2.5rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding: 10px;
+  //width: 100%;
+}
+
+div#gallery img { 
+  padding: 0.5rem;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  vertical-align: text-top;
+  cursor: pointer;
+}
+path.leaflet-interactive{
+  outline: none;
+}
+.bulma-modal-content {
+  width: 60vw;
+  height: 80vh;
+}
+

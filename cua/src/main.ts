@@ -129,13 +129,22 @@ $(function() {
     highlightSelectedPhotosets([photoset]);
     $("#gallery").empty();
     $("#photosets").empty().hide();
-    $("#info").html(photoset.title);
+    const reverseLink = $("<a class='bulma-button bulma-is-pulled-right bulma-is-small bulma-mt-2'>reverse image order</a>").on("click", reverseImageOrder);
+    $("#info").html(photoset.title).append(reverseLink);
     const imageBar = $("#gallery");
     console.log(imageBar);
     $.each(photoset.sides[side].images, function(index, image) {
       let imageUrl = `https://rosetta.slv.vic.gov.au/iiif/2/${image.ie_id}:${image.image_id}.jpg/full/,500/0/default.jpg`
       imageBar.append($("<img loading='lazy'>").attr("src", imageUrl).click(function(e) {viewImage($(this).attr("src")); openModal("modal-zoom");}));
     });
+  }
+
+  function reverseImageOrder() {
+    const gallery = $("#gallery");
+    //const images = gallery.children("img");
+    //gallery.empty();
+    //gallery.append(images.get().reverse());
+    gallery.children().each(function(i,img){gallery.prepend(img)});
   }
 
   // Make the map

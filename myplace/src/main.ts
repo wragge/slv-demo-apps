@@ -699,7 +699,7 @@ async function displayCUAGroup(cuaGroup, gridId) {
     //let imageId = getIdsFromManifest(manifest)[0];
     let imageUrl = `${imageId}/full/800,/0/default.jpg`;
     let image = $('<img loading="lazy"/>').attr("src", imageUrl);
-    let links = [`<a class="bulma-card-footer-item" href="https://slv.wraggelabs.com/cua/?road=${cuaGroup.road}">CUA browser</a>`, `<a class="bulma-card-footer-item" href="https://viewer.slv.vic.gov.au/?entity=${cuaGroup.ie_ids.split(",")[0]}&mode=browse">Image viewer</a>`]
+    let links = [`<a class="bulma-card-footer-item" href="https://slv.wraggelabs.com/cua/?photoset=${cuaGroup.road}">CUA browser</a>`, `<a class="bulma-card-footer-item" href="https://viewer.slv.vic.gov.au/?entity=${cuaGroup.ie_ids.split(",")[0]}&mode=browse">Image viewer</a>`]
     let cuaCard = makeCard("Committee for Urban Action", "success-30", image, null, content, makeFooter(links));
     $(`#${gridId}`).show();
     $(`#${gridId}-hero`).show();

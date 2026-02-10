@@ -3,37 +3,91 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Georeferenced maps from the State Library of Victoria</title>
+    <title>Explore georeferenced maps from the SLV</title>
     <script async src="https://plausible.io/js/pa-GZfFwRJG-MwXNc-wD5OYf.js"></script>
     <script>
       window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
       plausible.init()
     </script>
   </head>
-  <body>
-    <div class="bulma-container">
-      <section class="bulma-block bulma-section">
-    
-        <h1 class="bulma-title">
-          Georeferenced maps from the State Library of Victoria
-        </h1>
-        <p class="bulma-subtitle">Click on the map to start exploring</p>
-        <div id="map"></div>
-
-        <div id="info" class="bulma-mt-4 bulma-content">
-          <p>Click on a georeferenced map to display it above. Click again to remove it. You can add multiple maps. Adjust the opacity with the slider. To clear the results and start a new search, just click somewhere else on the base map.</p>
-        </div>  
-        <div id="results">
-
-        </div>
-      </section>
-
-    </div>
-    <footer class="bulma-footer">
-      <div class="bulma-content bulma-has-text-centered">
-        This is an experimental interface created by <a href="https://timsherratt.au">Tim Sherratt</a> during his time as <a href="https://lab.slv.vic.gov.au/team/tim-sherratt">Creative Technologist-in-Residence</a> at the <a href="https://lab.slv.vic.gov.au">State Library of Victoria Lab</a>.
+  <body class="noscroll">
+    <nav class="bulma-navbar bulma-is-primary" role="navigation" aria-label="main navigation">
+    <div class="bulma-navbar-brand">
+      <!-- navbar items, navbar burger... -->
+      <div class="bulma-navbar-item bulma-is-size-3 bulma-has-text-weight-bold bulma-m-0 bulma-pl-4">
+        <a class="bulma-has-text-black" href="/geomaps/">⌂</a> 
       </div>
-    </footer>
+      <div class="bulma-navbar-item">
+        <h1 class="bulma-title bulma-is-size-6 bulma-has-text-primary-invert">
+          Explore georeferenced maps from the SLV</h1>
+      </div>
+      <a role="button" class="bulma-navbar-burger bulma-has-text-primary-invert" data-target="aboutMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="aboutMenu" class="bulma-navbar-menu">
+      <div class="bulma-navbar-end">
+        <a id="about-link" class="bulma-navbar-item" href="#">About this</a>
+      </div>
+    </div>
+  </nav>
+    <div class="bulma-container-fluid">
+      <div class="bulma-columns is-full-height">
+        <div class="bulma-column is-desktop bulma-is-three-fifths bulma-is-three-quarters-fullhd">
+          
+          <div id="map"></div>
+        
+        </div>
+
+        <div class="bulma-column">
+          <div class="bulma-pt-4" id="all-results">
+            <div class="bulma-pt-4" id="selected"></div>
+            <div class="bulma-pt-4" id="results">
+              <div class="bulma-is-size-6 bulma-content">
+              <p>Explore <span id="map-count" class="bulma-has-text-weight-bold"></span> georeferenced maps from the State Library of Victoria!</p>
+              <ul>
+                <li>click on the ⭠ base map to display a list of georeferenced maps within 50km of your selected point</li>
+                <li>click on one or more of the results to display them layered on the base map</li>
+                <li>click again on a selected result to remove the georeferenced map from the base map</li>
+                <li>click on the layers icon in the top left of the base map to change the order and opacity of the georeferenced maps</li>
+                <li>bookmark or share the url to save your map selection</li>
+                <li>click somewhere else on the base map to start again</li>
+              </ul>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div id="modal-about" class="bulma-modal">
+      <div class="bulma-modal-background"></div>
+
+      <div class="bulma-modal-content">
+        <div class="bulma-box">
+          <p class="bulma-block">This is an experimental interface created by <a href="https://timsherratt.au">Tim Sherratt</a> during his time as <a href="https://lab.slv.vic.gov.au/team/tim-sherratt">Creative Technologist-in-Residence</a> at the <a href="https://lab.slv.vic.gov.au">State Library of Victoria Lab</a>.</p>
+          <p class="bulma-block">This interface displays digitised maps from the State Library of Victoria's collection that have been <a href="https://wragge.github.io/slv-allmaps/dashboard.html">georeferenced by the public using Allmaps</a>.</p>
+          <p class="bulma-block">If you'd like the help georeference the SLV's maps, <a href="https://wragge.github.io/slv-allmaps/">see the documentation</a>. This <a href="https://updates.timsherratt.org/2025/11/04/turning-the-slvs-maps-into.html">blog post</a> has some more information on how all the different parts were put together.</p>
+          <p class="bulma-block"><a href="https://slv.wraggelabs.com/">Explore more apps, sites, code, and documentation</a> relating to my SLV residency.</p>
+          <div class="bulma-is-size-6 bulma-mt-4 bulma-content">
+          <p class="bulma-has-text-weight-bold">Instructions</p>    
+              <ul>
+                <li>click on the base map to display a list of georeferenced maps within 50km of your selected point</li>
+                <li>click on one or more of the results to display them layered on the base map</li>
+                <li>click again on a selected result to remove the georeferenced map from the base map</li>
+                <li>click on the layers icon in the top left of the base map to change the order and opacity of the georeferenced maps</li>
+                <li>bookmark or share the url to save your map selection</li>
+                <li>click somewhere else on the base map to start again</li>
+              </ul>
+            </div>
+        </div>
+      </div>
+
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
   <script type="module" src="src/main.ts"></script>
   </body>
 </html>

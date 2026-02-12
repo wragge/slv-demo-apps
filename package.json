@@ -28,7 +28,7 @@
     "leaflet.control.opacity": "^1.6.0",
     "maplibre-gl": "^5.14.0",
     "maplibre-gl-layer-control": "^0.12.0",
-    "maplibre-gl-layer-manager": "^0.1.0",
+    "maplibre-gl-layer-manager": "github:wragge/maplibre-gl-layer-manager",
     "overpass-ts": "^4.3.8",
     "p-retry": "^7.1.0",
     "universalviewer": "^4.2.1",

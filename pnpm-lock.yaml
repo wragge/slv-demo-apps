@@ -39,8 +39,8 @@ importers:
         specifier: ^0.12.0
         version: 0.12.0(maplibre-gl@5.14.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       maplibre-gl-layer-manager:
-        specifier: ^0.1.0
-        version: 0.1.0(maplibre-gl@5.14.0)
+        specifier: github:wragge/maplibre-gl-layer-manager
+        version: https://codeload.github.com/wragge/maplibre-gl-layer-manager/tar.gz/a79834440ca7a3649a19b6ab243fbbb7df0d97c7(maplibre-gl@5.14.0)
       overpass-ts:
         specifier: ^4.3.8
         version: 4.3.8
@@ -68,7 +68,7 @@ importers:
         version: 1.95.1
       vite:
         specifier: ^7.1.7
-        version: 7.2.6(@types/node@24.10.1)(less@4.4.2)(sass@1.95.1)(terser@5.44.1)
+        version: 7.2.6(@types/node@25.2.3)(less@4.4.2)(sass@1.95.1)(terser@5.46.0)
       vite-css-prefixer:
         specifier: ^1.0.4
         version: 1.0.4
@@ -716,8 +716,8 @@ packages:
   '@types/node@10.17.60':
     resolution: {integrity: sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==}
 
-  '@types/node@24.10.1':
-    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
+  '@types/node@25.2.3':
+    resolution: {integrity: sha512-m0jEgYlYz+mDJZ2+F4v8D1AyQb+QzsNqRuI7xg1VQX/KlKS0qT9r1Mo16yo5F/MtifXFgaofIFsdFMox2SxIbQ==}
 
   '@types/node@8.10.52':
     resolution: {integrity: sha512-2RbW7WXeLex6RI+kQSxq6Ym0GiVcODeQ4Km7MnnTX5BHdOGQnqVa+s6AUmAW+OFYAJ8wv9QxvNZXm7/kBdGTVw==}
@@ -1300,8 +1300,8 @@ packages:
     resolution: {integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==}
     engines: {node: '>= 4'}
 
-  enhanced-resolve@5.18.3:
-    resolution: {integrity: sha512-d4lC8xfavMeBjzGr2vECC3fsGXziXZQyJxD868h2M/mBI3PwAuODxAkLkq5HYuvrPYcUtiLzsTo8U3PgX3Ocww==}
+  enhanced-resolve@5.19.0:
+    resolution: {integrity: sha512-phv3E1Xl4tQOShqSte26C7Fl84EwUdZsyOuSSk9qtAGyyQs2s3jJzComh+Abf4g187lUUAvH+H26omrqia2aGg==}
     engines: {node: '>=10.13.0'}
 
   entities@2.2.0:
@@ -1869,8 +1869,9 @@ packages:
       react-dom:
         optional: true
 
-  maplibre-gl-layer-manager@0.1.0:
-    resolution: {integrity: sha512-XT1vztVHxTDrIAMjWVPYol9Bdw5NVxe+GsKXv3T4Qpi8AlGINqbmQfBlBlYDr08eBDl0LN8+Z2/Ea9z+gdjCiA==}
+  maplibre-gl-layer-manager@https://codeload.github.com/wragge/maplibre-gl-layer-manager/tar.gz/a79834440ca7a3649a19b6ab243fbbb7df0d97c7:
+    resolution: {tarball: https://codeload.github.com/wragge/maplibre-gl-layer-manager/tar.gz/a79834440ca7a3649a19b6ab243fbbb7df0d97c7}
+    version: 0.1.0
     peerDependencies:
       maplibre-gl: ^5.0.0
 
@@ -2720,8 +2721,8 @@ packages:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
 
-  terser-webpack-plugin@5.3.15:
-    resolution: {integrity: sha512-PGkOdpRFK+rb1TzVz+msVhw4YMRT9txLF4kRqvJhGhCM324xuR3REBSHALN+l+sAhKUmz0aotnjp5D+P83mLhQ==}
+  terser-webpack-plugin@5.3.16:
+    resolution: {integrity: sha512-h9oBFCWrq78NyWWVcSwZarJkZ01c2AyGrzs1crmHZO3QUg9D61Wu4NPjBy69n7JqylFF5y+CsUZYmYEIZ3mR+Q==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
       '@swc/core': '*'
@@ -2736,8 +2737,8 @@ packages:
       uglify-js:
         optional: true
 
-  terser@5.44.1:
-    resolution: {integrity: sha512-t/R3R/n0MSwnnazuPpPNVO60LX0SKL45pyl9YlvxIdkH0Of7D5qM2EVe+yASRIlY5pZ73nclYJfNANGWPwFDZw==}
+  terser@5.46.0:
+    resolution: {integrity: sha512-jTwoImyr/QbOWFFso3YoU3ik0jBBDJ6JTOQiy/J2YxVJdZCc+5u7skhNwiOR3FQIygFqVUPHl7qbbxtjW2K3Qg==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -2921,8 +2922,8 @@ packages:
     resolution: {integrity: sha512-d+BFHzbiCx6zGfz0HyQ6Rg69w9k19nviJspaj4yNscGjrHu94sVP+aRm75yEbCh+r2/yR+7q6hux9LVtbuTGBw==}
     engines: {node: '>=14'}
 
-  watchpack@2.4.4:
-    resolution: {integrity: sha512-c5EGNOiyxxV5qmTtAB7rbiXxi1ooX1pQKMLX/MIabJjRA0SJBQOjKF+KSVfHkr9U1cADPon0mRiVe/riyaiDUA==}
+  watchpack@2.5.1:
+    resolution: {integrity: sha512-Zn5uXdcFNIA1+1Ei5McRd+iRzfhENPCe7LeABkJtNulSxjma+l7ltNx55BWZkRlwRnpOgHqxnjyaDgJnNXnqzg==}
     engines: {node: '>=10.13.0'}
 
   waveform-data@4.5.2:
@@ -3765,7 +3766,7 @@ snapshots:
 
   '@types/node@10.17.60': {}
 
-  '@types/node@24.10.1':
+  '@types/node@25.2.3':
     dependencies:
       undici-types: 7.16.0
 
@@ -4508,7 +4509,7 @@ snapshots:
 
   emojis-list@3.0.0: {}
 
-  enhanced-resolve@5.18.3:
+  enhanced-resolve@5.19.0:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.0
@@ -4975,7 +4976,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 24.10.1
+      '@types/node': 25.2.3
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -5158,7 +5159,7 @@ snapshots:
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
 
-  maplibre-gl-layer-manager@0.1.0(maplibre-gl@5.14.0):
+  maplibre-gl-layer-manager@https://codeload.github.com/wragge/maplibre-gl-layer-manager/tar.gz/a79834440ca7a3649a19b6ab243fbbb7df0d97c7(maplibre-gl@5.14.0):
     dependencies:
       maplibre-gl: 5.14.0
 
@@ -6128,18 +6129,18 @@ snapshots:
       yallist: 4.0.0
     optional: true
 
-  terser-webpack-plugin@5.3.15(esbuild@0.25.12)(webpack@5.103.0(esbuild@0.25.12)):
+  terser-webpack-plugin@5.3.16(esbuild@0.25.12)(webpack@5.103.0(esbuild@0.25.12)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
-      terser: 5.44.1
+      terser: 5.46.0
       webpack: 5.103.0(esbuild@0.25.12)
     optionalDependencies:
       esbuild: 0.25.12
 
-  terser@5.44.1:
+  terser@5.46.0:
     dependencies:
       '@jridgewell/source-map': 0.3.11
       acorn: 8.15.0
@@ -6330,7 +6331,7 @@ snapshots:
 
   vite-plugin-sass@0.1.0: {}
 
-  vite@7.2.6(@types/node@24.10.1)(less@4.4.2)(sass@1.95.1)(terser@5.44.1):
+  vite@7.2.6(@types/node@25.2.3)(less@4.4.2)(sass@1.95.1)(terser@5.46.0):
     dependencies:
       esbuild: 0.25.12
       fdir: 6.5.0(picomatch@4.0.3)
@@ -6339,11 +6340,11 @@ snapshots:
       rollup: 4.53.3
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 24.10.1
+      '@types/node': 25.2.3
       fsevents: 2.3.3
       less: 4.4.2
       sass: 1.95.1
-      terser: 5.44.1
+      terser: 5.46.0
 
   vm-browserify@1.1.2: {}
 
@@ -6357,7 +6358,7 @@ snapshots:
     dependencies:
       xml-name-validator: 4.0.0
 
-  watchpack@2.4.4:
+  watchpack@2.5.1:
     dependencies:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
@@ -6391,7 +6392,7 @@ snapshots:
       acorn-import-phases: 1.0.4(acorn@8.15.0)
       browserslist: 4.28.1
       chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.18.3
+      enhanced-resolve: 5.19.0
       es-module-lexer: 1.7.0
       eslint-scope: 5.1.1
       events: 3.3.0
@@ -6403,8 +6404,8 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.15(esbuild@0.25.12)(webpack@5.103.0(esbuild@0.25.12))
-      watchpack: 2.4.4
+      terser-webpack-plugin: 5.3.16(esbuild@0.25.12)(webpack@5.103.0(esbuild@0.25.12))
+      watchpack: 2.5.1
       webpack-sources: 3.3.3
     transitivePeerDependencies:
       - '@swc/core'

@@ -19,16 +19,7 @@
       max-height: calc(100vh - ( 4rem ) );
       height: calc(100vh - ( 4rem ) );
   }
-}
-
-.bulma-media.map-selected {
-    border-top: 10px solid #009e86;
-}
-
-#info {display: none;}
-
-
-.bulma-columns {
+  .bulma-columns {
   &.is-fullheight {
     min-height: calc(100vh - ( 4rem ) );
     max-height: calc(100vh - ( 4rem ) );
@@ -49,11 +40,20 @@
   overflow-y: auto;
   width: 100%;
 }
-
 body {
   overflow: hidden;
   height: 100vh;
 }
+}
+
+.bulma-media.map-selected {
+    border-top: 10px solid #009e86;
+}
+
+#info {display: none;}
+
+
+
 
 #all-results article {
     cursor: pointer;

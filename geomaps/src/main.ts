@@ -23,6 +23,7 @@ $(function() {
 
     var currentPoint;
     var layerManager;
+    var currentMaps = {};
 
     // Define the map syle (OpenStreetMap raster tiles)
     const mapStyle = {
@@ -49,7 +50,8 @@ $(function() {
       container: 'map', // container id
       style: mapStyle,
       center: [144.965, -36.815], // starting position [lng, lat]
-      zoom: 7 // starting zoom
+      zoom: 7,
+      maxPitch: 0
     });
 
     map.addControl(new maplibregl.NavigationControl({
@@ -57,31 +59,61 @@ $(function() {
     }));
 
     map.on("load", function () {
-    // Create the layer manager
-      layerManager = new LayerManager({
-        title: "Panel",
-        layers: [
-          {
-            id: "osm",
-            name: "Background",
-            visible: true,
-            opacity: 1.0,
-          }
-        ],
-        position: "top-left",
-        collapsed: true,
-  });
+        map.addSource("boundaries", {type: "geojson", data: {"type": "FeatureCollection", "features": [] }});
+        map.addLayer({
+            "id": "boundaries",
+            "type": "line",
+            "source": "boundaries",
+            'layout': {},
+            'paint': {
+                'line-opacity': [
+                    'case',
+                    ['boolean', ['feature-state', 'selected'], false],
+                    1,
+                    0
+                ],
+                'line-width': 4,
+                'line-color': "#3388ff"
+            }
+        });
 
-  // Add the control to the map
-  map.addControl(layerManager, "top-left");
-});
-    
-    
+        // Create the layer manager
+        layerManager = new LayerManager({
+            title: "Panel",
+            layers: [
+              {
+                id: "osm",
+                name: "Background",
+                visible: true,
+                opacity: 1.0,
+              }
+            ],
+            position: "top-left",
+            collapsed: true
+        });
 
+        // Add the control to the map
+        map.addControl(layerManager, "top-left");
+
+        if (lat && lon) {
+            selectPoint(lat, lon);
+        }
+    });
+    
     map.on('click', function(ev) {
+        mapIds = [];
         selectPoint(ev.lngLat.lat, ev.lngLat.lng);
     });
 
+    map.on('warpedmapadded', (event) => {
+        const idNum = event.mapIds[0].split("/").pop();
+        layerManager.addLayer({
+            id: idNum,
+            name: currentMaps[idNum],
+            visible: true,
+            opacity: 1.0,
+        });
+    })
 
     function selectPoint(lat, lon) {
         removeAllLayers();
@@ -94,9 +126,7 @@ $(function() {
         $("#results").empty();
         $("#selected").empty();
         if (mapIds.length > 0) {
-            mapIds.forEach((mapId, index) => {
-                getMapData(mapId, lat, lon, index);
-            });
+            getMapData(mapIds, lat, lon);
         } else {
             getMapSearchData(lat, lon);
             history.pushState(null, null, `${window.location.href.split("?")[0]}?lat=${lat}&lon=${lon}`);
@@ -107,7 +137,7 @@ $(function() {
         const url = `https://slv-places-481615284700.australia-southeast1.run.app/georeferenced_maps/maps_from_point.json?longitude=${lng}&latitude=${lat}&distance=50000&_shape=array`;
         const response = await fetchRequest(url);
         const mapData = await response.json();
-        console.log(mapData);
+        //console.log(mapData);
         displayResults(mapData);
     }
 
@@ -124,14 +154,14 @@ $(function() {
     function removeAllLayers() {
         const layers = map.getLayersOrder();
         layers.forEach((layerId) => {
-            if (layerId != "osm") {
+            if (!(["osm", "boundaries"].includes(layerId))) {
                 layerManager.removeLayer(layerId);
             }
         });
     }
 
     async function removeWarpedMap(allmapsId, item) {
-        console.log("remove");
+        //console.log("remove");
         const idNum = allmapsId.split("/").pop();
         //console.log(warpedMapLayer.getMapIds());
         //console.log(allmapsId);
@@ -142,14 +172,11 @@ $(function() {
         history.pushState(null, null, `${window.location.href.replace("&map_id=" + idNum, "")}`);
         
         let index = item.data("order");
-        console.log(parseInt(index)-1);
         if (index == 0) {
             $("#results").prepend(item);
         } else {
             let previous = findPreviousResult(index);
-            
             if (previous && previous.length > 0) {
-                console.log(previous.length);
                 previous.after(item)
             } else {
                 $("#results").prepend(item);
@@ -163,35 +190,25 @@ $(function() {
     }
 
     async function addWarpedMap(allmapsId, item, title) {
-        console.log("add");
-        console.log(allmapsId);
+        //console.log("add");
+        //console.log(allmapsId);
         const idNum = allmapsId.split("/").pop();
         const warpedMapLayer = new WarpedMapLayer({layerId: idNum});
-        map.addLayer(warpedMapLayer);
+        map.addLayer(warpedMapLayer, "boundaries");
+        currentMaps[idNum] = item.data("title").split("/")[0];
         await warpedMapLayer.addGeoreferenceAnnotationByUrl(allmapsId);
-        //await warpedMapLayer.addGeoreferenceAnnotationByUrl(allmapsId)
-        //const response = await fetchRequest(allmapsId);
-        //const annotation = await response.json();
-        //const warpedMapLayer = await new WarpedMapLayer(annotation).addTo(mapLayer);
-        //warpedMapLayer.setOpacity(parseFloat(slider.value));
-        //warpedMapLayer.bindTooltip(title);
         const bounds = warpedMapLayer.getBounds();
-        map.fitBounds(bounds, {padding: [25,25]});
-        layerManager.addLayer({
-          id: idNum,
-          name: item.data("title").split("/")[0],
-          visible: true,
-          opacity: 1.0,
+        const mapCentre = warpedMapLayer.getMapsCenter(warpedMapLayer.getMapIds(), {projection: {definition: "EPSG:4326"}});
+        const popup = new maplibregl.Popup({
+            closeButton: false,
+            closeOnClick: false
         });
+        
+
+        map.fitBounds(bounds, {padding: [100,100]});
         if (!window.location.href.includes(idNum)) {
             history.pushState(null, null, `${window.location.href}&map_id=${idNum}`);
         }
-        //console.log(mapIds);
-        //const idIndex = mapIds.indexOf(idNum);
-        //if (idIndex !== -1) {
-        //    mapIds.splice(idIndex, 1);
-        //}
-        //console.log(mapIds);
         $("#selected").prepend(item);
         item.one("click", function() {
             $(this).toggleClass("map-selected");
@@ -200,9 +217,10 @@ $(function() {
     }
 
     async function addResult(gmap, index, warp) {
+        const idNum = gmap.allmaps_map_id.split("/").pop();
         $("#info").show();
         let itemTemplate = `
-            <article data-title="${gmap.title}" data-order="${index}" class="bulma-media bulma-pt-0 bulma-mt-0">
+            <article data-title="${gmap.title}" data-order="${index}" data-map="${index}" class="bulma-media bulma-pt-0 bulma-mt-0">
               <figure class="bulma-media-left">
                 <p class="bulma-image bulma-is-128x128">
                   <img loading="lazy" src="${gmap.image_id}/square/256,/0/default.jpg" />
@@ -213,7 +231,8 @@ $(function() {
                 <tr><th colspan=2>${gmap.title}</th></tr>
                 <tr><th>Date</th><td>${gmap.date}</td></tr>
                 <tr><th>Scale</th><td>${gmap.scale}</td></tr>
-                <tr><th>Distance</th><td>${parseFloat((gmap.distance / 1000).toFixed(2))}km</td></tr>
+                <tr><th>Distance (centre/bounds)</th><td>${parseFloat((gmap.centre_distance / 1000).toFixed(2))} km / ${parseFloat((gmap.distance / 1000).toFixed(2))} km</td></tr>
+                <tr><th>Area</th><td>${parseFloat((gmap.area / 1000000).toFixed(2))} km<sup>2</sup></td></tr>
                 <tr><td colspan=2><a href="https://find.slv.vic.gov.au/discovery/fulldisplay?vid=61SLV_INST:SLV&docid=alma${gmap.alma_id}">Catalogue</a> &middot; <a href="https://viewer.slv.vic.gov.au/?entity=${gmap.ie_id}&mode=browse">Image viewer</a> &middot; <a href="https://viewer.allmaps.org/?url=${gmap.allmaps_map_id}">Allmaps viewer</a></td>
                 </table>
               </div>
@@ -223,26 +242,59 @@ $(function() {
         $("#results").append(item);
         if (warp === true) {
             item.toggleClass("map-selected")
-            addWarpedMap(gmap.allmaps_map_id, item, gmap.title);
+            await addWarpedMap(gmap.allmaps_map_id, item, gmap.title);
         } else {
             item.one("click", function() {
                 $(this).toggleClass("map-selected");
                 addWarpedMap(gmap.allmaps_map_id, $(this), gmap.title)
             });
         }
-    }
-
-    async function displayResults(mapData) {
-        mapData.forEach((gmap, index) => {
-            addResult(gmap, index);
+        item.on("mouseenter", function() {
+            map.setFeatureState(
+                { source: "boundaries", id: $(this).data("map") },
+                { selected: true }
+            );
         });
+        item.on("mouseleave", function() {
+            map.setFeatureState(
+                { source: "boundaries", id: $(this).data("map") },
+                { selected: false }
+            );
+        })
     }
 
-    async function getMapData(mapId, lat, lon, index) {
-        const url = `https://slv-places-481615284700.australia-southeast1.run.app/georeferenced_maps/maps_by_id.json?map_id=${mapId}&latitude=${lat}&longitude=${lon}&_shape=array`;
-        const response = await fetchRequest(url);
-        const mapData = await response.json();
-        addResult(mapData[0], index, true);
+    function addBoundaries(mapData, append) {
+        const features = [];
+        mapData.forEach((result, index) => {
+            const idNum = result.allmaps_map_id.split("/").pop();
+            features.push({"type": "Feature", "id": index, "geometry": JSON.parse(result.geojson)});
+        });
+        
+        let geojson = {
+          "type": "FeatureCollection",
+          "features": features
+        };
+        map.getSource("boundaries").setData(geojson);
+    }
+
+    async function displayResults(mapData, warp) {
+        mapData.forEach((gmap, index) => {
+            addResult(gmap, index, warp);
+        });
+        addBoundaries(mapData);
+    }
+
+    async function getMapData(mapIds, lat, lon, index) {
+        const mapData = [];
+        for (let mapId of mapIds) {
+            const url = `https://slv-places-481615284700.australia-southeast1.run.app/georeferenced_maps/maps_by_id.json?map_id=${mapId}&latitude=${lat}&longitude=${lon}&_shape=array`;
+            const response = await fetchRequest(url);
+            const data = await response.json();
+            mapData.push(data[0]);
+        }
+        //console.log(mapIds)
+        //await addResult(mapData[0], index, true);
+        displayResults(mapData, true);
     }
 
     async function getMapCount() {
@@ -257,9 +309,7 @@ $(function() {
     var mapIds = urlParams.getAll("map_id");
     let lat = urlParams.get("lat");
     let lon = urlParams.get("lon");
-    if (lat && lon) {
-        selectPoint(lat, lon);
-    }
+    
 
 
 
@@ -269,26 +319,25 @@ $(function() {
     //}
     //const mapData = fetchRequest()
 
-      function openModal(modal) {
-    $(`#${modal}`).addClass("bulma-is-active");
-  }
-  function closeModal() {
-    $(".bulma-modal").removeClass("bulma-is-active");
-  }
-
-  $("#about-link").click(function() {openModal("modal-about");})
-
-  $(".bulma-modal-background, .bulma-modal-close, .delete, button#modal-close").click(function() {closeModal();})
-  document.addEventListener('keydown', (event) => {
-    if(event.key === "Escape") {
-      closeModal();
+    function openModal(modal) {
+        $(`#${modal}`).addClass("bulma-is-active");
     }
-  });
-  $(".bulma-navbar-burger").click(function() {
+    function closeModal() {
+        $(".bulma-modal").removeClass("bulma-is-active");
+    }
 
-      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-      $(".bulma-navbar-burger").toggleClass("bulma-is-active");
-      $(".bulma-navbar-menu").toggleClass("bulma-is-active");
+    $("#about-link").click(function() {openModal("modal-about");})
 
-  });
+    $(".bulma-modal-background, .bulma-modal-close, .delete, button#modal-close").click(function() {closeModal();})
+    document.addEventListener('keydown', (event) => {
+        if(event.key === "Escape") {
+            closeModal();
+        }
+    });
+    $(".bulma-navbar-burger").click(function() {
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        $(".bulma-navbar-burger").toggleClass("bulma-is-active");
+        $(".bulma-navbar-menu").toggleClass("bulma-is-active");
+
+    });
 });

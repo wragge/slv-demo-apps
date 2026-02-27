@@ -2,6 +2,7 @@ import $ from "jquery";
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { WarpedMapLayer } from '@allmaps/maplibre'
+import pRetry, {AbortError} from 'p-retry';
 import LayerManager from 'maplibre-gl-layer-manager';
 import 'maplibre-gl-layer-manager/src/layer-manager.css';
 import "bulma/css/versions/bulma-prefixed.css"
@@ -18,6 +19,35 @@ $(function() {
         if ([404,401].includes(response.status)) {
             throw new AbortError(response.statusText);
         }
+        return response;
+    }
+
+    async function retryImage(event) {
+        console.log("Image not loaded");
+        //console.log(event.target);
+        let retryCount;
+        const urlParts = event.target.src.split("#");
+        const srcUrl = urlParts[0];
+        if (urlParts.length > 1) {
+            const retryFlag = urlParts[1];
+            retryCount = parseInt(retryFlag.split("-")[1])
+        } else {
+            retryCount = 0;
+        }
+        if (retryCount < 5) {
+            let ieId = srcUrl.match(/IE\d+/)[0];
+            await new Promise(resolve => setTimeout(resolve, 1000 * retryCount * 2));
+            const response = await getIIIFManifest(ieId);
+            //console.log(response);
+            $(event.target).attr('src', `${srcUrl}#retry-${retryCount + 1}`);
+        } else {
+            $(event.target).off();
+        }
+    }
+
+    async function getIIIFManifest(ieId) {
+        const url = "https://rosetta.slv.vic.gov.au/delivery/iiif/presentation/2.1/" + ieId + "/manifest.json";
+        let response = await pRetry(() => fetchRequest(url, {method: "HEAD"}), {retries: 5, minTimeout: 1000, randomize: true});
         return response;
     }
 
@@ -196,7 +226,16 @@ $(function() {
         const warpedMapLayer = new WarpedMapLayer({layerId: idNum});
         map.addLayer(warpedMapLayer, "boundaries");
         currentMaps[idNum] = item.data("title").split("/")[0];
-        await warpedMapLayer.addGeoreferenceAnnotationByUrl(allmapsId);
+        try {
+            await warpedMapLayer.addGeoreferenceAnnotationByUrl(allmapsId);
+        } catch(e) {
+            // If there's a problem getting the map
+            console.log('Map not found');
+            let srcUrl = $("img", item).attr("src");
+            let ieId = srcUrl.match(/IE\d+/)[0];
+            const response = await getIIIFManifest(ieId);
+            await warpedMapLayer.addGeoreferenceAnnotationByUrl(allmapsId);
+        }
         const bounds = warpedMapLayer.getBounds();
         const mapCentre = warpedMapLayer.getMapsCenter(warpedMapLayer.getMapIds(), {projection: {definition: "EPSG:4326"}});
         const popup = new maplibregl.Popup({
@@ -223,7 +262,7 @@ $(function() {
             <article data-title="${gmap.title}" data-order="${index}" data-map="${index}" class="bulma-media bulma-pt-0 bulma-mt-0">
               <figure class="bulma-media-left">
                 <p class="bulma-image bulma-is-128x128">
-                  <img loading="lazy" src="${gmap.image_id}/square/256,/0/default.jpg" />
+                  <img loading="lazy" />
                 </p>
               </figure>
               <div class="bulma-media-content">
@@ -239,6 +278,8 @@ $(function() {
             </article>
         `
         let item = $(itemTemplate);
+        let image = $("img", item).on("error", (event) => { retryImage(event); });
+        image.attr("src", `${gmap.image_id}/square/256,/0/default.jpg`);
         $("#results").append(item);
         if (warp === true) {
             item.toggleClass("map-selected")

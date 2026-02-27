@@ -12,6 +12,48 @@ $(function() {
   let currentWay = urlParams.get('way');
   let currentPhotoset = urlParams.get('photoset');
 
+  async function fetchRequest(url, options) {
+      if (options == undefined) {
+          options = {};
+      }
+      const response = await fetch(url, options);
+      // Some IIIF manifests return 401 errors (Unauthorised) -- don't know why...
+      if ([404,401].includes(response.status)) {
+          throw new AbortError(response.statusText);
+      }
+      return response;
+  }
+
+  async function retryImage(event) {
+      console.log("Image not loaded");
+      // console.log(event.target);
+      let retryCount;
+      const urlParts = event.target.src.split("#");
+      const srcUrl = urlParts[0];
+      if (urlParts.length > 1) {
+          const retryFlag = urlParts[1];
+          retryCount = parseInt(retryFlag.split("-")[1])
+      } else {
+          retryCount = 0;
+      }
+      if (retryCount < 5) {
+          let ieId = srcUrl.match(/IE\d+/)[0];
+          await new Promise(resolve => setTimeout(resolve, 1000 * retryCount * 2));
+          const response = await getIIIFManifest(ieId);
+          //const results = await response.json();
+          //console.log(results);
+          $(event.target).attr('src', `${srcUrl}#retry-${retryCount + 1}`);
+      } else {
+          $(event.target).off();
+      }
+  }
+
+  async function getIIIFManifest(ieId) {
+      const url = `https://wraggelabs.com/slv_iiif/${ieId}?group=True&head=True`;
+      let response = await fetchRequest(url);
+      return response;
+  }
+
   async function loadPhotoData() {
     if (photoData === undefined) {
       let response = await fetch("/cua-photos.json");
@@ -134,8 +176,10 @@ $(function() {
     const imageBar = $("#gallery");
     console.log(imageBar);
     $.each(photoset.sides[side].images, function(index, image) {
-      let imageUrl = `https://rosetta.slv.vic.gov.au/iiif/2/${image.ie_id}:${image.image_id}.jpg/full/,500/0/default.jpg`
-      imageBar.append($("<img loading='lazy'>").attr("src", imageUrl).click(function(e) {viewImage($(this).attr("src")); openModal("modal-zoom");}));
+      let imageUrl = `https://rosetta.slv.vic.gov.au/iiif/2/${image.ie_id}:${image.image_id}.jpg/full/,500/0/default.jpg`;
+      let img = $("<img loading='lazy'>").on("error", (event) => { retryImage(event); });
+      img.attr("src", imageUrl).click(function(e) {viewImage($(this).attr("src")); openModal("modal-zoom");})
+      imageBar.append(img);
     });
   }
 

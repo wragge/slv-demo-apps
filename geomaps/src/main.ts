@@ -213,9 +213,13 @@ $(function() {
             }
         }
         //$(`article[data-order="${parseInt(index)-1}"]`).after(item);
-        item.one("click", function() {
+        item.one("click", async function() {
             $(this).toggleClass("map-selected");
-            addWarpedMap(allmapsId, $(this));
+            await addWarpedMap(allmapsId, $(this));
+            map.setFeatureState(
+                { source: "boundaries", id: $(this).data("map") },
+                { selected: false }
+            );
         });
     }
 
@@ -285,9 +289,13 @@ $(function() {
             item.toggleClass("map-selected")
             await addWarpedMap(gmap.allmaps_map_id, item, gmap.title);
         } else {
-            item.one("click", function() {
+            item.one("click", async function() {
                 $(this).toggleClass("map-selected");
-                addWarpedMap(gmap.allmaps_map_id, $(this), gmap.title)
+                await addWarpedMap(gmap.allmaps_map_id, $(this), gmap.title);
+                map.setFeatureState(
+                    { source: "boundaries", id: $(this).data("map") },
+                    { selected: false }
+                );
             });
         }
         item.on("mouseenter", function() {
